@@ -14,12 +14,13 @@ class Captain < ActiveRecord::Base
   end
 
   def self.talented_seafarers
-    # self.sailors & self.motorists union but is an array, have to convert it to activerecord:relation via
+    # self.sailors & self.motorists union but is an array. the test uses pluck, so have to convert it to activerecord:relation via this ugliness... 
     self.where(id: (self.sailors & self.motorists).map(&:id))
   end
 
 #breaking bc it's testing for any of the boats??
   def self.non_sailors
+    binding.pry
     self.joins(boats: [:classifications]).where.not(classifications: {name: 'Sailboat'})
   end
 end
